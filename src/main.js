@@ -480,14 +480,19 @@ class WebPreview {
             }
         );
 
-        this.urlInput.addEventListener(
-            "keydown",
-            (event) => {
-                if (event.key === "Enter") {
-                    this.loadUrl();
-                }
-            }
-        );
+    this.urlInput.addEventListener(
+    "keydown",
+    (event) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            event.stopPropagation();
+
+            this.loadUrl();
+
+            this.urlInput.blur();
+        }
+    }
+);
 
         const detectButton =
             this.page.querySelector(
@@ -534,35 +539,40 @@ class WebPreview {
         );
     }
 
-    setupPageNavigation() {
-        const page = this.page;
+setupPageNavigation() {
+    const page = this.page;
 
-        page.show = () => {
-            if (this.previewOpen) {
-                return;
-            }
+    page.show = () => {
+        if (this.previewOpen) {
+            return;
+        }
 
-            this.previewOpen = true;
+        this.previewOpen = true;
 
-            this.hideFloatingButton();
+        this.hideFloatingButton();
 
-            this.actionStack?.remove(
-                this.actionId
-            );
+        this.actionStack?.remove(
+            this.actionId
+        );
 
-            this.actionStack?.push({
-                id: this.actionId,
+        this.actionStack?.push({
+            id: this.actionId,
 
-                action: () => {
-                    this.closeFromBack();
-                },
-            });
+            action: () => {
+                this.closeFromBack();
+            },
+        });
 
-            app.append(page);
+        app.append(page);
 
+        const currentUrl =
+            this.urlInput?.value?.trim();
+
+        if (!currentUrl) {
             this.detectLocalServer();
-        };
-    }
+        }
+    };
+}
 
     toggleMenu() {
         if (!this.menu) {
@@ -1153,31 +1163,32 @@ class WebPreview {
     }
 
     loadUrl() {
-        let url =
-            this.urlInput.value.trim();
+    let url =
+        this.urlInput.value.trim();
 
-        if (!url) {
-            return;
-        }
-
-        if (
-            !url.startsWith("http://") &&
-            !url.startsWith("https://")
-        ) {
-            url =
-                `http://${url}`;
-        }
-
-        this.urlInput.value =
-            url;
-
-        this.saveUrl(url);
-
-        this.hideEmptyState();
-
-        this.iframe.src =
-            url;
+    if (!url) {
+        return;
     }
+
+    if (
+        !url.startsWith("http://") &&
+        !url.startsWith("https://") &&
+        !url.startsWith("javascript:")
+    ) {
+        url =
+            `http://${url}`;
+    }
+
+    this.urlInput.value =
+        url;
+
+    this.saveUrl(url);
+
+    this.hideEmptyState();
+
+    this.iframe.src =
+        url;
+}
 
     refresh() {
         if (!this.iframe) {
