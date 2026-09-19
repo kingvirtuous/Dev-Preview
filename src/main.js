@@ -14,10 +14,8 @@ class WebPreview {
     urlInput = null;
 
     backButton = null;
-    forwardButton = null;
     refreshButton = null;
     menuButton = null;
-    closeButton = null;
 
     menu = null;
 
@@ -140,7 +138,8 @@ class WebPreview {
                 flex-shrink: 0;
                 background: #2d2d2d;
                 color: #ffffff;
-                font-size: 20px;
+                font-size: 22px;
+                font-weight: 700;
                 cursor: pointer;
             }
 
@@ -159,21 +158,11 @@ class WebPreview {
                 background: #2d2d2d;
             }
 
-            .web-preview-url-icon {
-                width: 32px;
-                flex-shrink: 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 16px;
-                opacity: 0.75;
-            }
-
             .web-preview-url {
                 width: 100%;
                 min-width: 0;
                 height: 100%;
-                padding: 0 8px 0 0;
+                padding: 0 8px;
                 border: none;
                 outline: none;
                 background: transparent;
@@ -198,16 +187,13 @@ class WebPreview {
                 flex-shrink: 0;
                 background: #2d2d2d;
                 color: #ffffff;
-                font-size: 22px;
+                font-size: 24px;
+                font-weight: 700;
                 cursor: pointer;
             }
 
             .web-preview-menu-button:active {
                 background: #3a3a3a;
-            }
-
-            .web-preview-close {
-                font-size: 22px;
             }
 
             .web-preview-content {
@@ -260,14 +246,6 @@ class WebPreview {
 
             .web-preview-menu.open {
                 display: block;
-            }
-
-            .web-preview-menu-title {
-                padding: 8px 10px 6px;
-                font-size: 12px;
-                color: #aaaaaa;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
             }
 
             .web-preview-menu-item {
@@ -361,39 +339,15 @@ class WebPreview {
                     <button
                         class="web-preview-nav-button web-preview-back"
                         type="button"
-                        title="Go back"
-                        aria-label="Go back"
+                        title="Return to editor"
+                        aria-label="Return to editor"
                     >
                         ←
-                    </button>
-
-                    <button
-                        class="web-preview-nav-button web-preview-forward"
-                        type="button"
-                        title="Go forward"
-                        aria-label="Go forward"
-                    >
-                        →
-                    </button>
-
-                    <button
-                        class="web-preview-nav-button web-preview-reload"
-                        type="button"
-                        title="Reload"
-                        aria-label="Reload"
-                    >
-                        ↻
                     </button>
 
                     <div
                         class="web-preview-url-wrapper"
                     >
-
-                        <div
-                            class="web-preview-url-icon"
-                        >
-                            🌐
-                        </div>
 
                         <input
                             class="web-preview-url"
@@ -405,6 +359,15 @@ class WebPreview {
                     </div>
 
                     <button
+                        class="web-preview-nav-button web-preview-reload"
+                        type="button"
+                        title="Reload"
+                        aria-label="Reload"
+                    >
+                        ↻
+                    </button>
+
+                    <button
                         class="web-preview-menu-button"
                         type="button"
                         title="Preview options"
@@ -413,137 +376,9 @@ class WebPreview {
                         ⋮
                     </button>
 
-                    <button
-                        class="web-preview-nav-button web-preview-close"
-                        type="button"
-                        title="Close preview"
-                        aria-label="Close preview"
-                    >
-                        ×
-                    </button>
-
                     <div
                         class="web-preview-menu"
                     >
-
-                        <div
-                            class="web-preview-menu-title"
-                        >
-                            Preview Mode
-                        </div>
-
-                        <button
-                            class="web-preview-menu-item"
-                            data-mode="responsive"
-                            type="button"
-                        >
-
-                            <span
-                                class="web-preview-menu-item-left"
-                            >
-                                <span
-                                    class="web-preview-menu-icon"
-                                >
-                                    ↔
-                                </span>
-
-                                <span>
-                                    Responsive
-                                </span>
-                            </span>
-
-                            <span
-                                class="web-preview-menu-check"
-                            >
-                                ✓
-                            </span>
-
-                        </button>
-
-                        <button
-                            class="web-preview-menu-item"
-                            data-mode="mobile"
-                            type="button"
-                        >
-
-                            <span
-                                class="web-preview-menu-item-left"
-                            >
-                                <span
-                                    class="web-preview-menu-icon"
-                                >
-                                    📱
-                                </span>
-
-                                <span>
-                                    Mobile
-                                </span>
-                            </span>
-
-                            <span
-                                class="web-preview-menu-check"
-                            >
-                            </span>
-
-                        </button>
-
-                        <button
-                            class="web-preview-menu-item"
-                            data-mode="tablet"
-                            type="button"
-                        >
-
-                            <span
-                                class="web-preview-menu-item-left"
-                            >
-                                <span
-                                    class="web-preview-menu-icon"
-                                >
-                                    ▣
-                                </span>
-
-                                <span>
-                                    Tablet
-                                </span>
-                            </span>
-
-                            <span
-                                class="web-preview-menu-check"
-                            >
-                            </span>
-
-                        </button>
-
-                        <button
-                            class="web-preview-menu-item"
-                            data-mode="desktop"
-                            type="button"
-                        >
-
-                            <span
-                                class="web-preview-menu-item-left"
-                            >
-                                <span
-                                    class="web-preview-menu-icon"
-                                >
-                                    🖥
-                                </span>
-
-                                <span>
-                                    Desktop
-                                </span>
-                            </span>
-
-                            <span
-                                class="web-preview-menu-check"
-                            >
-                            </span>
-
-                        </button>
-
-                        <div
-                            class="web-preview-menu-divider"
-                        ></div>
 
                         <button
                             class="web-preview-menu-item web-preview-detect"
@@ -553,6 +388,7 @@ class WebPreview {
                             <span
                                 class="web-preview-menu-item-left"
                             >
+
                                 <span
                                     class="web-preview-menu-icon"
                                 >
@@ -562,6 +398,7 @@ class WebPreview {
                                 <span>
                                     Detect Local Server
                                 </span>
+
                             </span>
 
                         </button>
@@ -605,11 +442,6 @@ class WebPreview {
                 ".web-preview-back"
             );
 
-        this.forwardButton =
-            this.page.querySelector(
-                ".web-preview-forward"
-            );
-
         this.refreshButton =
             this.page.querySelector(
                 ".web-preview-reload"
@@ -620,11 +452,6 @@ class WebPreview {
                 ".web-preview-menu-button"
             );
 
-        this.closeButton =
-            this.page.querySelector(
-                ".web-preview-close"
-            );
-
         this.menu =
             this.page.querySelector(
                 ".web-preview-menu"
@@ -633,14 +460,7 @@ class WebPreview {
         this.backButton.addEventListener(
             "click",
             () => {
-                this.goBack();
-            }
-        );
-
-        this.forwardButton.addEventListener(
-            "click",
-            () => {
-                this.goForward();
+                this.close();
             }
         );
 
@@ -660,40 +480,12 @@ class WebPreview {
             }
         );
 
-        this.closeButton.addEventListener(
-            "click",
-            () => {
-                this.close();
-            }
-        );
-
         this.urlInput.addEventListener(
             "keydown",
             (event) => {
                 if (event.key === "Enter") {
                     this.loadUrl();
                 }
-            }
-        );
-
-        const modeButtons =
-            this.page.querySelectorAll(
-                "[data-mode]"
-            );
-
-        modeButtons.forEach(
-            (button) => {
-                button.addEventListener(
-                    "click",
-                    () => {
-                        const mode =
-                            button.dataset.mode;
-
-                        this.setPreviewMode(
-                            mode
-                        );
-                    }
-                );
             }
         );
 
@@ -723,7 +515,7 @@ class WebPreview {
                         event.target
                     ) &&
                     event.target !==
-                        this.menuButton
+                    this.menuButton
                 ) {
                     this.closeMenu();
                 }
@@ -738,7 +530,7 @@ class WebPreview {
         );
 
         this.setPreviewMode(
-            this.currentMode
+            "responsive"
         );
     }
 
@@ -1512,10 +1304,8 @@ class WebPreview {
         this.urlInput = null;
 
         this.backButton = null;
-        this.forwardButton = null;
         this.refreshButton = null;
         this.menuButton = null;
-        this.closeButton = null;
 
         this.menu = null;
     }
