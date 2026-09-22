@@ -87,6 +87,18 @@ class WebPreview {
                 "none";
         }
 
+        /*
+         * Make the Acode page itself fill the
+         * available screen and prevent unwanted
+         * scrolling outside the preview.
+         */
+        this.page.style.width = "100%";
+        this.page.style.height = "100%";
+        this.page.style.minHeight = "0";
+        this.page.style.margin = "0";
+        this.page.style.padding = "0";
+        this.page.style.overflow = "hidden";
+
         this.commands =
             acode.require("commands");
 
@@ -107,6 +119,8 @@ class WebPreview {
             .web-preview {
                 width: 100%;
                 height: 100%;
+                min-height: 0;
+                box-sizing: border-box;
                 display: flex;
                 flex-direction: column;
                 overflow: hidden;
@@ -127,8 +141,8 @@ class WebPreview {
             }
 
             .web-preview-nav-button {
-                width: 38px;
-                height: 38px;
+                width: 44px;
+                height: 40px;
                 padding: 0;
                 border: none;
                 border-radius: 7px;
@@ -138,7 +152,7 @@ class WebPreview {
                 flex-shrink: 0;
                 background: #2d2d2d;
                 color: #ffffff;
-                font-size: 22px;
+                font-size: 24px;
                 font-weight: 700;
                 cursor: pointer;
             }
@@ -162,7 +176,7 @@ class WebPreview {
                 width: 100%;
                 min-width: 0;
                 height: 100%;
-                padding: 0 8px;
+                padding: 0 10px;
                 border: none;
                 outline: none;
                 background: transparent;
@@ -176,8 +190,8 @@ class WebPreview {
             }
 
             .web-preview-menu-button {
-                width: 38px;
-                height: 38px;
+                width: 44px;
+                height: 40px;
                 padding: 0;
                 border: none;
                 border-radius: 7px;
@@ -197,10 +211,11 @@ class WebPreview {
             }
 
             .web-preview-content {
-                flex: 1;
+                flex: 1 1 auto;
+                height: 0;
                 min-height: 0;
                 width: 100%;
-                overflow: auto;
+                overflow: hidden;
                 position: relative;
                 background: #eeeeee;
                 box-sizing: border-box;
@@ -208,6 +223,7 @@ class WebPreview {
 
             .web-preview-viewport {
                 width: 100%;
+                height: 100%;
                 min-height: 100%;
                 display: flex;
                 justify-content: center;
@@ -223,9 +239,6 @@ class WebPreview {
                 height: 100%;
                 border: 0;
                 background: #ffffff;
-                transition:
-                    width 0.2s ease,
-                    height 0.2s ease;
             }
 
             .web-preview-menu {
@@ -246,6 +259,14 @@ class WebPreview {
 
             .web-preview-menu.open {
                 display: block;
+            }
+
+            .web-preview-menu-title {
+                padding: 8px 10px 6px;
+                font-size: 12px;
+                color: #aaaaaa;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
             }
 
             .web-preview-menu-item {
@@ -283,19 +304,6 @@ class WebPreview {
                 flex-shrink: 0;
             }
 
-            .web-preview-menu-check {
-                width: 20px;
-                text-align: center;
-                color: #ffffff;
-                flex-shrink: 0;
-            }
-
-            .web-preview-menu-divider {
-                height: 1px;
-                margin: 6px 4px;
-                background: #444444;
-            }
-
             @media (max-width: 600px) {
                 .web-preview-toolbar {
                     gap: 4px;
@@ -303,13 +311,13 @@ class WebPreview {
                 }
 
                 .web-preview-nav-button {
-                    width: 34px;
-                    height: 36px;
+                    width: 42px;
+                    height: 38px;
                 }
 
                 .web-preview-menu-button {
-                    width: 34px;
-                    height: 36px;
+                    width: 42px;
+                    height: 38px;
                 }
 
                 .web-preview-url-wrapper {
@@ -329,7 +337,8 @@ class WebPreview {
             this.getSavedUrl();
 
         const initialUrl =
-            savedUrl || this.defaultUrl;
+            savedUrl ||
+            "";
 
         this.page.innerHTML += `
             <div class="web-preview">
@@ -379,6 +388,12 @@ class WebPreview {
                     <div
                         class="web-preview-menu"
                     >
+
+                        <div
+                            class="web-preview-menu-title"
+                        >
+                            Preview Options
+                        </div>
 
                         <button
                             class="web-preview-menu-item web-preview-detect"
@@ -460,7 +475,7 @@ class WebPreview {
         this.backButton.addEventListener(
             "click",
             () => {
-                this.close();
+                this.goBack();
             }
         );
 
@@ -480,19 +495,19 @@ class WebPreview {
             }
         );
 
-    this.urlInput.addEventListener(
-    "keydown",
-    (event) => {
-        if (event.key === "Enter") {
-            event.preventDefault();
-            event.stopPropagation();
+        this.urlInput.addEventListener(
+            "keydown",
+            (event) => {
+                if (event.key === "Enter") {
+                    event.preventDefault();
+                    event.stopPropagation();
 
-            this.loadUrl();
+                    this.loadUrl();
 
-            this.urlInput.blur();
-        }
-    }
-);
+                    this.urlInput.blur();
+                }
+            }
+        );
 
         const detectButton =
             this.page.querySelector(
@@ -520,7 +535,7 @@ class WebPreview {
                         event.target
                     ) &&
                     event.target !==
-                    this.menuButton
+                        this.menuButton
                 ) {
                     this.closeMenu();
                 }
@@ -533,46 +548,51 @@ class WebPreview {
                 this.hideEmptyState();
             }
         );
-
-        this.setPreviewMode(
-            "responsive"
-        );
     }
 
-setupPageNavigation() {
-    const page = this.page;
+    setupPageNavigation() {
+        const page = this.page;
 
-    page.show = () => {
-        if (this.previewOpen) {
-            return;
-        }
+        page.show = () => {
+            if (this.previewOpen) {
+                return;
+            }
 
-        this.previewOpen = true;
+            this.previewOpen = true;
 
-        this.hideFloatingButton();
+            this.hideFloatingButton();
 
-        this.actionStack?.remove(
-            this.actionId
-        );
+            this.actionStack?.remove(
+                this.actionId
+            );
 
-        this.actionStack?.push({
-            id: this.actionId,
+            this.actionStack?.push({
+                id: this.actionId,
 
-            action: () => {
-                this.closeFromBack();
-            },
-        });
+                action: () => {
+                    this.closeFromBack();
+                },
+            });
 
-        app.append(page);
+            app.append(page);
 
-        const currentUrl =
-            this.urlInput?.value?.trim();
+            const currentUrl =
+                this.urlInput?.value?.trim();
 
-        if (!currentUrl) {
-            this.detectLocalServer();
-        }
-    };
-}
+            if (currentUrl) {
+                if (
+                    !this.iframe.src ||
+                    this.iframe.src ===
+                        "about:blank"
+                ) {
+                    this.iframe.src =
+                        currentUrl;
+                }
+            } else {
+                this.detectLocalServer();
+            }
+        };
+    }
 
     toggleMenu() {
         if (!this.menu) {
@@ -1065,27 +1085,7 @@ setupPageNavigation() {
     }
 
     goBack() {
-        if (!this.iframe) {
-            return;
-        }
-
-        try {
-            this.iframe.contentWindow.history.back();
-        } catch {
-            // Ignore navigation errors.
-        }
-    }
-
-    goForward() {
-        if (!this.iframe) {
-            return;
-        }
-
-        try {
-            this.iframe.contentWindow.history.forward();
-        } catch {
-            // Ignore navigation errors.
-        }
+        this.close();
     }
 
     async detectLocalServer() {
@@ -1163,32 +1163,43 @@ setupPageNavigation() {
     }
 
     loadUrl() {
-    let url =
-        this.urlInput.value.trim();
+        let url =
+            this.urlInput.value.trim();
 
-    if (!url) {
-        return;
+        if (!url) {
+            return;
+        }
+
+        /*
+         * Never allow javascript: URLs to be
+         * loaded or saved as preview URLs.
+         */
+        if (
+            url.toLowerCase().startsWith(
+                "javascript:"
+            )
+        ) {
+            return;
+        }
+
+        if (
+            !url.startsWith("http://") &&
+            !url.startsWith("https://")
+        ) {
+            url =
+                `http://${url}`;
+        }
+
+        this.urlInput.value =
+            url;
+
+        this.saveUrl(url);
+
+        this.hideEmptyState();
+
+        this.iframe.src =
+            url;
     }
-
-    if (
-        !url.startsWith("http://") &&
-        !url.startsWith("https://") &&
-        !url.startsWith("javascript:")
-    ) {
-        url =
-            `http://${url}`;
-    }
-
-    this.urlInput.value =
-        url;
-
-    this.saveUrl(url);
-
-    this.hideEmptyState();
-
-    this.iframe.src =
-        url;
-}
 
     refresh() {
         if (!this.iframe) {
@@ -1244,9 +1255,30 @@ setupPageNavigation() {
 
     getSavedUrl() {
         try {
-            return localStorage.getItem(
-                this.storageKey
-            );
+            const url =
+                localStorage.getItem(
+                    this.storageKey
+                );
+
+            /*
+             * Remove the old javascript:
+             * test URL that may have been saved
+             * by an earlier version.
+             */
+            if (
+                url &&
+                url.trim()
+                    .toLowerCase()
+                    .startsWith("javascript:")
+            ) {
+                localStorage.removeItem(
+                    this.storageKey
+                );
+
+                return null;
+            }
+
+            return url;
         } catch {
             return null;
         }
