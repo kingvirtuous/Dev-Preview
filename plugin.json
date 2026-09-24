@@ -1,29 +1,28 @@
 {
   "$schema": "https://acode.app/schema/plugin/v0.1.0.json",
-  "id": "acode.plugin.webpreview",
+  "id": "com.kingvirtuous.acodeliveserver",
   "name": "Acode Live Server",
-  "main": "main.js",
+  "main": "dist/main.js",
   "version": "1.0.0",
   "readme": "readme.md",
   "changelogs": "changelog.md",
-  "repository": "",
+  "repository": "https://github.com/kingvirtuous/Dev-Preview",
   "icon": "icon.png",
-  "files": [],
   "minVersionCode": 290,
   "license": "MIT",
   "keywords": [
-    "Web Preview",
-    "Live Preview",
-    "React",
-    "Vite",
+    "web preview",
+    "live preview",
+    "react",
+    "vite",
     "localhost",
-    "Developer Tools"
+    "developer tools"
   ],
   "price": 0,
   "permissions": [],
   "author": {
     "name": "King Virtuous",
-    "email": "kingvirtuous08@gmailcom",
-    "github": "kingvirtuosu"
+    "email": "kingvirtuous08@gmail.com",
+    "github": "kingvirtuous"
   }
 }
