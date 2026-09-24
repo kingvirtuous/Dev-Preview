@@ -1,7 +1,7 @@
 {
   "$schema": "https://acode.app/schema/plugin/v0.1.0.json",
   "id": "acode.plugin.webpreview",
-  "name": "Acode Live Preview",
+  "name": "Acode Live Server",
   "main": "main.js",
   "version": "1.0.0",
   "readme": "readme.md",
@@ -24,6 +24,6 @@
   "author": {
     "name": "King Virtuous",
     "email": "kingvirtuous08@gmailcom",
-    "github": ""
+    "github": "kingvirtuosu"
   }
 }
